@@ -19,7 +19,7 @@ if [ "$DEB_CODENAME" = "" ]; then
 fi
 
 bucket="openrov-software-nightlies"
-folder="/${DEB_CODENAME}/arduino"
+folder="/${DEB_CODENAME}/arduino-builder"
 
 contentType="application/x-compressed-tar"
 dateValue=`date -R`
