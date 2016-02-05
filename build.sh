@@ -16,6 +16,8 @@ export PATH=/usr/local/go/bin:$PATH
 
 cd -
 
+rm -rf arduino-builder
+
 git clone https://github.com/arduino/arduino-builder.git
 cd arduino-builder
 
