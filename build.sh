@@ -7,14 +7,31 @@ apt-get update
 apt-get install -y curl gcc git-core mercurial
 
 rm -fr /usr/local/go
-curl -sSL https://storage.googleapis.com/golang/go1.4.3.src.tar.gz | sudo tar -xz -C /usr/local
+rm -rf go.tar.gz
 
-cd /usr/local/go/src
-./make.bash
+if [[ $(arch) == *"x86"* ]]
+then
+	echo "Detected x86_64"
+	wget https://storage.googleapis.com/golang/go1.6.2.linux-amd64.tar.gz -O go.tar.gz
+elif [[ $(arch) == *"x64"* ]]
+then
+	echo "Detected x86_64"
+	wget https://storage.googleapis.com/golang/go1.6.2.linux-amd64.tar.gz -O go.tar.gz
+elif [[ $(arch) == *"arm"* ]]
+then
+	echo "Detected arm"
+	wget https://storage.googleapis.com/golang/go1.6.2.linux-armv6l.tar.gz -O go.tar.gz
+fi
 
-export PATH=/usr/local/go/bin:$PATH
 
-cd -
+tar xf go.tar.gz
+
+mv ./go /usr/local/go
+
+export GOROOT=/usr/local/go
+export PATH=$PATH:$GOROOT/bin
+
+rm -rf go.tar.gz
 
 rm -rf arduino-builder
 
@@ -26,15 +43,10 @@ source setup_go_env_vars
 go get github.com/go-errors/errors
 go get github.com/stretchr/testify
 go get github.com/jstemmer/go-junit-report
-go get golang.org/x/codereview/patch
-go get golang.org/x/tools/cmd/vet
-go build
+go build arduino.cc/arduino-builder
 
 # Copy bin file to output
 cp arduino-builder ../output/usr/bin/
-
-# Run tests - currently broken
-#go test -v ./src/arduino.cc/builder/test/... | bin/go-junit-report > report.xml
 
 
 
